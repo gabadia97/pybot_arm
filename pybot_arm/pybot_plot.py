@@ -156,6 +156,8 @@ def animate_3D(position):
     ax.set_zlabel('Z(t)')
     
     animate = animation.FuncAnimation(fig, func, frames=numDataPoints, fargs=(dataSet, line))
+    
+    return animate
 
 
 ##############################################################################
