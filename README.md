@@ -38,3 +38,99 @@ and boundary conditions
 Reference: Dolan, Elizabeth D., Jorge J. Moré, and Todd S. Munson. 
 Benchmarking optimization software with COPS 3.0. No. ANL/MCS-TM-273. 
 Argonne National Lab., Argonne, IL (US), 2004. (https://www.mcs.anl.gov/~tmunson/papers/cops.pdf)
+
+
+
+Modules/functions:
+
+-pybot_ocp
+
+pybot_ocp.solve_pybot 
+    Function to create casADI Opti stack object for the robot arm OCP.
+
+    Parameters
+    ----------
+    N : int
+        Number of control intervals.
+    L : float
+        Length of robot arm.
+    bounds : dict
+        Dictionary of boundary conditions [z0,zf] for 
+        keys "rho","rho_dot","theta","theta_dot","phi","phi_dot"
+
+    Returns
+    -------
+    (solve_ocp,info) : tuple 
+        Robot arm OCP solution. 
+        Tuple consists of (casadi.OptiSol object, dict of problem vars/constants)
+
+pybot_ocp.export_to_csv
+Export solution to CSV file for post-processing.
+
+    Parameters
+    ----------
+    sol : tuple 
+        Robot arm OCP solution. 
+        Tuple consists of (casadi.OptiSol object, dict of problem vars/constants)
+    filename : str
+        Desired CSV filename (without .csv).
+    path : str, optional
+        Desired path for file location. The default is str(Path.cwd()).
+
+    Returns
+    -------
+    None.
+
+-pybot_plot
+
+pybot_plot.read_csv_data
+    This function reads the csv file and converts the data from spherical 
+    coordinates to Cartesian coordinates. It returns the position, velocity, 
+    and acceleration in Cartesian coordinates along with the control output in
+    spherical coordinates.
+    
+        Parameters
+    ----------
+    csv_file : string
+        the .csv file containing the solution data
+
+    Returns
+    -------
+    (position, velocity, acceleration, control, time) : lists
+        the position, velocity, and acceleration in Cartesian coordinates
+        along with the spherical coordinate control output and time
+
+pybot_plot.create_plots
+    This function creates 3 subplots vs time with labels and a titles. 
+    Specyfing plot_type control will use rho, theta, phi coordinates
+    
+    Parameters
+    ----------
+    data: list
+    the position, velocity, acceleration, or control data output from
+    the read_csv_data function
+    
+    plot_type: str (position, velocity, acceleration, control)
+       Choosing the type will adjust the axis labels and titles of the plot.
+       Specifying plot_type of  position, velocity, or acceleration will use 
+       x, y, z coordinates while control will use spherical coordinates. 
+       Specifying position will also output a 3D plot of the trajectory.
+
+    Returns
+    -------
+    None.
+
+pybot_plot.animate_3D
+
+    This function creates 3D animation given the x, y, and z data of the trajectory. 
+    
+    Parameters
+    ----------
+    position : list
+        the position output from the read_csv_data function 
+        
+    Returns
+    -------
+    animate : matplotlib.animation.FuncAnimation
+        a 3D animation of the position trajectory in Cartesian coordinates
+
