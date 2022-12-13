@@ -13,6 +13,17 @@ def read_csv_data(csv_file):
     coordinates to Cartesian coordinates. It returns the position, velocity, 
     and acceleration in Cartesian coordinates along with the control output in
     spherical coordinates.
+    
+        Parameters
+    ----------
+    csv_file : string
+        the .csv file containing the solution data
+
+    Returns
+    -------
+    (position, velocity, acceleration, control, time) : lists
+        the position, velocity, and acceleration in Cartesian coordinates
+        along with the spherical coordinate control output and time
     """
     
     df = pd.read_csv(csv_file)
@@ -52,16 +63,20 @@ def create_plots( data, time, plot_type):
      
     """
     This function creates 3 subplots vs time with labels and a titles. 
+    Specyfing plot_type control will use rho, theta, phi coordinates
     
-    data: the position, velocity, acceleration, or control data output from
+    Parameters
+    ----------
+    data: list
+    the position, velocity, acceleration, or control data output from
     the read_csv_data function
     
-     
-    plot_type: position, velocity, acceleration, control
+    plot_type: str (position, velocity, acceleration, control)
        Choosing the type will adjust the axis labels and titles of the plot.
        Specifying plot_type of  position, velocity, or acceleration will use 
-       x, y, z coordinates.
-       Specyfing plot_type control will use rho, theta, phi coordinates
+       x, y, z coordinates while control will use spherical coordinates. 
+       Specifying position will also output a 3D plot of the trajectory.
+
     """
     
 
@@ -121,6 +136,16 @@ def create_plots( data, time, plot_type):
 def animate_3D(position):
     """
     This function creates 3D animation given the x, y, and z data of the trajectory. 
+    
+    Parameters
+    ----------
+    position : list
+        the position output from the read_csv_data function 
+        
+    Returns
+    -------
+    animate : matplotlib.animation.FuncAnimation
+        a 3D animation of the position trajectory in Cartesian coordinates
     
     """
     
