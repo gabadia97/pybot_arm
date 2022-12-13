@@ -1,4 +1,3 @@
-
 pybot_arm is a high-level Python package created to solve the robot arm 
 benchmark optimal control problem. The goal of this problem is to determine 
 the set of controls that minimize the time taken for a robot arm to complete 
@@ -144,6 +143,9 @@ pybot_plot.animate_3D
     -------
     animate : matplotlib.animation.FuncAnimation
         a 3D animation of the position trajectory in Cartesian coordinates
+
+
+-GUI 
 
 runGUI.func1
     
