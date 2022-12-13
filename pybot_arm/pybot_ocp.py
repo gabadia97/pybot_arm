@@ -10,30 +10,6 @@ import numpy as np
 import csv
 from pathlib import Path
 
-def format_bounds(rho,rho_dot,theta,theta_dot,phi,phi_dot):
-    """
-    Function to format bounds into an ordered dictionary for setup_pybot.
-    
-    Parameters
-    ----------    
-    Each parameter is a list of floats [lb,ub] corresponding to each 
-    respective variable.
-
-    Returns
-    -------
-    bounds : dict
-        Dictionary of boundary conditions.
-
-    """
-    bounds = {"rho":rho, 
-              "rho_dot":rho_dot,
-              "theta":theta, 
-              "theta_dot":theta_dot,
-              "phi":phi, 
-              "phi_dot":phi_dot}
-    
-    return bounds
-
 def pybot_dynamics(x,u,L):
     """
     dx/dt = f(x,u)
@@ -95,13 +71,14 @@ def solve_pybot(N,L,bounds):
     L : float
         Length of robot arm.
     bounds : dict
-        Ordered dictionary of boundary conditions [z0,zf] for 
+        Dictionary of boundary conditions [z0,zf] for 
         keys "rho","rho_dot","theta","theta_dot","phi","phi_dot"
 
     Returns
     -------
-    opti : casadi.Opti object
-        pybot_arm Opti stack object.
+    (solve_ocp,info) : tuple 
+        Robot arm OCP solution. 
+        Tuple consists of (casadi.OptiSol object, dict of problem vars/constants)
 
     """
     # Create optimization problem instance
@@ -177,7 +154,9 @@ def solve_pybot(N,L,bounds):
     opti.subject_to(opti.bounded(0.,phi,cas.pi)) # phi: [0,pi]
     opti.subject_to(opti.bounded(-1.,U,1.)) # |u|<=1
     
-    for index,key in enumerate(bounds.keys()):
+    # Iterate over keys in order corresponding to decision variable indices
+    keys = ["rho","rho_dot","theta","theta_dot","phi","phi_dot"]
+    for index,key in enumerate(keys):
         # Define boundary conditions
         opti.subject_to(X[index,0] == bounds[key][0])
         opti.subject_to(X[index,-1] == bounds[key][-1])
@@ -195,7 +174,7 @@ def solve_pybot(N,L,bounds):
     # Solve OCP
     solve_ocp = opti.solve()
     
-    # return opti
+    # return opti and parameters
     return (solve_ocp, info)
 
 def export_to_csv(sol,filename,path=str(Path.cwd())):
@@ -268,15 +247,11 @@ def parse_sol(sol):
     n = 6   # number of state variables
     m = 3   # number of control variables
     N = info["N"] # number of intervals
-    # N = sol.value_variables()[1].shape[1]   # number of intervals
     
     # Convert casadi MX variable type to float value
     X = solve_ocp.value(info["X"])
     U = solve_ocp.value(info["U"])
     T = solve_ocp.value(info["T"])
-    # X = np.reshape(sol.value(sol.opti.x[:n*(N+1)]),(N+1,n)).T
-    # U = np.reshape(sol.value(sol.opti.x[n*(N+1):-1]),(N,m)).T
-    # T = sol.value(sol.opti.x[-1])
     
     # Convert dimensionless horizon to time array
     dt = T/N                    # compute gap between nodes
@@ -294,6 +269,16 @@ def parse_sol(sol):
     return time, X, X_dot, U
 
 def main():
+    """
+    Example script to use module. Generates CSV file in current working directory.
+
+    Returns
+    -------
+    sol : tuple 
+        Robot arm OCP solution. 
+        Tuple consists of (casadi.OptiSol object, dict of problem vars/constants)
+
+    """
     print(__name__)
     
     N = 100
@@ -308,7 +293,7 @@ def main():
               "phi_dot": [0,0]}
     
     sol = solve_pybot(N, L, bounds)
-    # sol = solve_pybot(opti)
+
     export_to_csv(sol,"pybot_L5")
     
     return sol
