@@ -113,7 +113,7 @@ pybot_plot.read_csv_data
 
 pybot_plot.create_plots
     This function creates 3 subplots vs time with labels and a titles. 
-    Specyfing plot_type control will use rho, theta, phi coordinates
+    Specifying plot_type control will use rho, theta, phi coordinates
     
     Parameters
     ----------
@@ -145,3 +145,41 @@ pybot_plot.animate_3D
     animate : matplotlib.animation.FuncAnimation
         a 3D animation of the position trajectory in Cartesian coordinates
 
+runGUI.func1
+    
+    This function displays a welcome message to the user and prompts them to enter information about their system.
+    
+    Parameters
+    ----------
+    none 
+        
+    Returns
+    -------
+    none
+    
+runGUI.func2
+    
+    This function gets entries from user for number of points, length of robot arm, and the intitial and final values
+    for rho, theta, phi, rho_dot, theta_dot and phi_dot. It will display an error if the entered values are outside of
+    the acceptable range
+    
+    Parameters
+    ----------
+    none 
+        
+    Returns
+    -------
+    none
+    
+runGUI.func4
+
+    This function takes the user's entries and uses pybot_ocp.solve_pybot and pybot_ocp.export_to_csv to perform calculations and 
+    export the solution to a csv file.
+    
+    Parameters
+    ----------
+    none 
+        
+    Returns
+    -------
+    none
