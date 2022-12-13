@@ -123,23 +123,6 @@ def animate_3D(position):
     This function creates 3D animation given the x, y, and z data of the trajectory. 
     
     """
-
-    # def func(num, dataSet, line):
-    #     line.set_data(dataSet[0:2, :num])
-    #     line.set_3d_properties(dataSet[2, :num])
-        
-    # dataSet = np.array([position[0], position[1], position[2]])
-    # numDataPoints = len(position[0])
-    
-    # fig = plt.figure()
-    # ax = Axes3D(fig)
-    # line =plt.plot(dataSet[0], dataSet[1], dataSet[2], lw=2, c='g')[0]
-    # ax.set_xlabel('X(t)')
-    # ax.set_ylabel('Y(t)')
-    # ax.set_zlabel('Z(t)')
-    
-    # line_ani = animation.FuncAnimation(fig, func, frames=numDataPoints, fargs=(dataSet, line))
-    # plt.show()
     
     def func(num, dataSet, line):
         line.set_data(dataSet[0:2, :num])
