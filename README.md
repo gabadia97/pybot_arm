@@ -7,6 +7,7 @@ trajectory/controls. Users can either use the modules and corresponding
 methods directly (as shown below) or use the provided GUI.
 
 To use modules directly: import pybot_arm.pybot_ocp, pybot_arm.pybot_plot
+
 To use GUI from shell/terminal: python runGUI.py
 
 Consider the following optimal control problem:
