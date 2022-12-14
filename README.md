@@ -6,6 +6,8 @@ parameters of the problem and solve for the corresponding optimal
 trajectory/controls. Users can either use the modules and corresponding 
 methods directly (as shown below) or use the provided GUI.
 
+To use modules directly: import pybot_arm.pybot_ocp, pybot_arm.pybot_plot
+To use GUI from shell/terminal: python runGUI.py
 
 Consider the following optimal control problem:
 min 𝑡𝑓 
@@ -38,7 +40,7 @@ Modules/functions:
 -pybot_ocp
 
 pybot_ocp.solve_pybot 
-    Function to create casADI Opti stack object for the robot arm OCP.
+Function to create casADI Opti stack object for the robot arm OCP.
 
     Parameters
     ----------
